@@ -13,7 +13,8 @@ import {ToastrModule} from "ngx-toastr";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./shared/common/auth.interceptor";
-import { NavbarComponent } from './layouts/navbar/navbar.component';
+import {NavbarComponent} from './layouts/navbar/navbar.component';
+// import {AgmCoreModule} from "@agm/core";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,9 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
       progressBar: true,
       progressAnimation: 'increasing',
     }),
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyB5rbSnFPSFIzBcQqmqWWpAUiiEXENA5BQ'
+    // })
   ],
   providers: [
     {
