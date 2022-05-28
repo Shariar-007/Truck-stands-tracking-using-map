@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TruckStandsService} from "../../services/truck-stands.service";
 import {Loader} from "@googlemaps/js-api-loader";
 
@@ -8,24 +8,24 @@ import {Loader} from "@googlemaps/js-api-loader";
   styleUrls: ['./truck-stands.component.scss']
 })
 export class TruckStandsComponent implements OnInit {
-  lat = 51.678418;
-  lng = 7.809007;
-  mapType = 'satellite';
+  map: any;
+  @ViewChild('map') mapElement: any;
+  latitude = 43.879078;
+  longitude = -103.4615581;
+  markers = [
+    { latitude: 23.8423489, longitude: 90.3590594, name: 'Dhaka,Mirpur Kalshi'},
+    { latitude: 7.92658, longitude: -12.05228, name: 'Dhaka,Dhanmondi 15'},
+    { latitude: 48.75606, longitude: -118.859, name: 'Dhaka,Mohammadpur'},
+    { latitude: 5.19334, longitude: -67.03352, name: 'Dhaka,Gabhtoli'},
+    { latitude: 12.09407, longitude: 26.31618, name: 'Dhaka,Motijhil'},
+    { latitude: 47.92393, longitude: 78.58339, name: 'Dhaka,Malibagh'}
+  ];
+
   constructor(private truckStandsService: TruckStandsService) { }
 
   ngOnInit(): void {
     this.getTruckStands();
-    let loader = new Loader({
-      apiKey: 'AIzaSyB5rbSnFPSFIzBcQqmqWWpAUiiEXENA5BQ'
-    })
-    loader.load().then(() => {
-      new google.maps.Map(<HTMLElement>document.getElementById("map"), {
-        center: {lat: 51.233334, lng: 6.783333},
-        zoom: 6
-      });
-    })
   }
-
 
   getTruckStands(){
     this.truckStandsService.getTruckStands().subscribe((stands: any) => {
@@ -33,4 +33,34 @@ export class TruckStandsComponent implements OnInit {
     });
   }
 
+
+  ngAfterViewInit(): void {
+    const mapProperties = {
+      center: new google.maps.LatLng(this.latitude, this.longitude),
+      zoom: 2,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
+    this.markers.forEach(location => {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(location.latitude, location.longitude),
+        map: this.map,
+        title: location.name
+      });
+
+      // Add click event to open info window on marker
+      marker.addListener("click", (mapsMouseEvent: any) => {
+        const infoWindow = new google.maps.InfoWindow({
+          position: mapsMouseEvent.latLng,
+          content: marker.getTitle() + ', ' + JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+        });
+
+        // infoWindow.setContent(
+        //   JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+        // );
+
+         infoWindow.open(marker.getMap(), marker);
+      });
+    });
+  }
 }

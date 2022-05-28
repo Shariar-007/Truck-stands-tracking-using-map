@@ -9,9 +9,8 @@ import {AuthService} from "../shared/services/auth.service";
 export class TruckStandsService extends BaseApiService {
   // headers = new HttpHeaders({
   //   'Content-Type': 'application/json; charset=utf-8',
-  //   Authorization: 'Bearer ' + this.authService.getAccessToken()
+  //    Authorization: 'Bearer ' + this.authService.getAccessToken()
   // });
-
   customUrl = '/admin/master/truckstands';
 
   constructor(private http: HttpClient, private authService: AuthService) {
