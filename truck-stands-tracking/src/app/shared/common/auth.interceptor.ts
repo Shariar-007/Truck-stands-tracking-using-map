@@ -20,12 +20,9 @@ export class AuthInterceptor implements HttpInterceptor {
     if (!this.authService.isLoggedIn()) {
       return next.handle(request);
     }
-    // const modifiedReq = request.clone({
-    //   params: new HttpParams().set('access_token', this.authService.getAccessToken())
-    // });
     const  clonedRequest = request.clone({
       headers: new HttpHeaders({
-        Authorization: 'authtoken: ' + this.authService.getAccessToken(),
+        authtoken: this.authService.getAccessToken(),
         "Content-Type": "application/json"
       })
     });
