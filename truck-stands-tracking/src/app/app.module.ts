@@ -38,9 +38,6 @@ import {NavbarComponent} from './layouts/navbar/navbar.component';
       progressBar: true,
       progressAnimation: 'increasing',
     }),
-    // AgmCoreModule.forRoot({
-    //   apiKey: 'AIzaSyB5rbSnFPSFIzBcQqmqWWpAUiiEXENA5BQ'
-    // })
   ],
   providers: [
     {
